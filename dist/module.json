@@ -1,13 +1,18 @@
-{
-  "name": "module",
-  "title": "New Module",
-  "description": "",
-  "version": "This is auto replaced",
+{"name": "liveanimate",
+  "title": "Live Animate",
+  "description": "This module is designed to allow GMs to live animate sudden token movements",
+  "version": "1.0.0",
   "library": "false",
+  "socket":true,
   "manifestPlusVersion": "1.0.0",
-  "minimumCoreVersion": "0.7.9",
-  "compatibleCoreVersion": "0.7.9",
+  "minimumCoreVersion": "0.8.0",
+  "compatibleCoreVersion": "0.8.6",
   "authors": [
+    {
+      "name": "YourFavouriteOreo",
+      "url":"https://github.com/YourFavouriteOreo",
+      "discord":"YourFavouriteOreo#6798"
+    },
     {
       "name": "Blackcloud",
       "url": "https://github.com/Blackcloud010",
@@ -20,16 +25,13 @@
     }
   ],
   "dependencies": [
-
+    { "name": "lib-df-hotkeys" }
   ],
   "conflicts": [
 
   ],
   "esmodules": [
     "module.js"
-  ],
-  "scripts": [
-
   ],
   "styles": [
     "/styles/module.css"
@@ -41,9 +43,9 @@
       "path": "languages/en.json"
     }
   ],
-  "url": "This is auto replaced",
-  "manifest": "This is auto replaced",
-  "download": "This is auto replaced",
+  "url": "https://github.com/YourFavouriteOreo/VTT-Live-Animate",
+  "manifest": "replace",
+  "download": "replace",
   "media": [
     {
       "type": "icon",
