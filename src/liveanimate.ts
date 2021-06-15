@@ -24,19 +24,18 @@ Hooks.once("ready", () => {
       ui.notifications?.error(
         "'My Module' requires the 'Library: DF Hotkeys' module. Please install and activate this dependency."
       );
-    // Perform alternative code to handle missing library
     return;
   } else {
     hotkeys.registerGroup({
-      name: 'liveanimate.animate', // <- Must be unique
-      label: 'Live Animate',
-      description: 'Hot keys for the live animate module' // <-- Optional
+      name: "liveanimate.animate", 
+      label: "Live Animate",
+      description: "Hot keys for the live animate module", 
     });
     // @ts-ignore
     hotkeys.registerShortcut({
       name: "liveanimate.animate",
       label: "Animate",
-      group: 'liveanimate.animate',
+      group: "liveanimate.animate",
       default: {
         key: hotkeys.keys.KeyE,
         alt: false,
@@ -53,12 +52,21 @@ Hooks.once("ready", () => {
   }
 });
 
+function moveToken(tokenDocument, x, y) {
+  // Move Token accounting for offset inorder to center token on cursor
+  const token = tokenDocument._object as Token;
+  token.data.x = x - offset.x;
+  token.data.y = y - offset.y;
+  tokenDocument.update(token.data);
+}
+
 function hookDragHandlers(entityType) {
   entityType.prototype.animateMovement = (function () {
     const original = entityType.prototype.animateMovement;
     return function (ray) {
       const TokenDocument = this.document;
       if (TokenDocument.getFlag("world", "isLiveAnimate")) {
+        // Skip animation movement
         this.data.x = ray.B.x;
         this.data.y = ray.B.y;
         this.data.update({ x: ray.B.x, y: ray.B.y });
@@ -72,35 +80,34 @@ function hookDragHandlers(entityType) {
   })();
 
   const originalDragLeftStartHandler = entityType.prototype._onDragLeftStart;
-  entityType.prototype._onDragLeftStart = function (event) {
-    this.document.setFlag("world", "isLiveAnimate", false);
-    originalDragLeftStartHandler.call(this, event);
-    if (isBeingPressed || animationLock) {
+  // This function is ran when foundry decides the token is being dragged
+  entityType.prototype._onDragLeftStart = async function (event) {
+    // Check for keybind and GM
+    if (isBeingPressed && game.user?.isGM) {
+      // Calculate Offset
       offset.x = this.center.x - this.x;
       offset.y = this.center.y - this.y;
+      // Lock to live animate so that GM can let go of keybind and monologue
       isBeingPressed ? (animationLock = true) : (animationLock = false);
       const tokenDocument = this.document;
-      const token = tokenDocument._object as Token;
       const destination = event.data.destination;
-      tokenDocument.setFlag("world", "isLiveAnimate", true);
-      token.data.x = destination.x - offset.x;
-      token.data.y = destination.y - offset.y;
-      tokenDocument.update(token.data);
+      await tokenDocument.setFlag("world", "isLiveAnimate", true);
+      tokenDocument.update(this.data);
+      moveToken(tokenDocument, destination.x, destination.y);
+    } else {
+      await this.document.setFlag("world", "isLiveAnimate", false);
+      originalDragLeftStartHandler.call(this, event);
     }
   };
 
   const originalDragLeftMoveHandler = entityType.prototype._onDragLeftMove;
   entityType.prototype._onDragLeftMove = async function (event) {
-    if (isBeingPressed || animationLock) {
+    // Check for animation lock and animate
+    if (animationLock) {
       const isToken = this instanceof Token;
       if (isToken) {
-        const tokenDocument = this.document;
-        const token = tokenDocument._object as Token;
         const destination = event.data.destination;
-        tokenDocument.setFlag("world", "isLiveAnimate", true);
-        token.data.x = destination.x - offset.x;
-        token.data.y = destination.y - offset.y;
-        tokenDocument.update(token.data);
+        moveToken(this.document,destination.x,destination.y)
       }
     } else {
       originalDragLeftMoveHandler.call(this, event);
@@ -110,26 +117,12 @@ function hookDragHandlers(entityType) {
   const originalDragLeftDropHandler = entityType.prototype._onDragLeftDrop;
 
   entityType.prototype._onDragLeftDrop = function (event) {
-    if (isBeingPressed || animationLock) {
+    if (animationLock) {
       animationLock = false;
       this.document.setFlag("world", "isLiveAnimate", true);
     } else originalDragLeftDropHandler.call(this, event);
   };
-
-  // const originalOnClickLeftHandler = entityType.prototype._onClickLeft;
-  // entityType.prototype._onClickLeft = function (event) {
-  //   originalOnClickLeftHandler.call(this, event);
-  //   if (isBeingPressed) {
-  //     console.log(document.onmousemove)
-  //     console.log("CLICK SPECIAL");
-  //     const token = this as Token;
-      
-  //     console.log(token.mouseInteractionManager?.handlers);
-  //   } 
-  // };
 }
-
-
 
 if (process.env.NODE_ENV === "development") {
   if (module.hot) {

@@ -1,8 +1,16 @@
-# About
-A template for creating foundry modules using typescript. Project files are setup to be hot reloaded.
-Information on hot module replacement: https://webpack.js.org/concepts/hot-module-replacement/
+# Why?
+![Shaquille licking a spicy chicken wing and going oooh!](.github/heat.webp)     
+Sometimes  a scene requires a little extra spice , perhaps the evil villain wants to enunciate on every step as he speaks about how he enjoyed an evil act on every ... little... step or perhaps a character rolls a nat 20 and punches a character across a room and it launches him soaring through the air across the room. This module is built to allow GMs to add that extra ***spice*** to their GM-ing 
 
-# Setup:
+![Module demonstration!](.github/offsetexplained.gif)     
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/yourfavouriteoreo)
+
+# Current Features
+ - Keybinding Animate Button
+ - Live Animate singular character tokens
+
+# Development Instructions From the Template:
 About Bundler:  
 This project uses webpack to bundle your files. What this means is that every script file in src/ will get 'bundled' into one output .js file in dist/.
 Likewise every static file (.html, .json, etc.) in static/ will get moved to dist.  
@@ -22,22 +30,20 @@ for setting up symantic links between the dist/ folder and foundryuser.
 
 A note on typescript, it is completely optional and if you do not wish to use then rename any .ts files and their references to .js.
 
-# Usage:
+
+        
+
+
+# Development Commands:
 Development: 
 To run with hotswap enabled run the command: npm run start
 
 Release:
 To ready the project for release run the command: npm run build:production
 
-CD/CI:
-This template is setup with automatic github release, developed by League of Foundry Developers in
-their FoundryVtt-Module-Template. https://github.com/League-of-Foundry-Developers/FoundryVTT-Module-Template 
-
-# Troubleshooting:
-Hot Reload force refreshes my page!
- - access foundry through localhost:8080 instead of localhost:30000
- - You might have multiple modules running HMR. It is critical that if you are working on multiple modules that only a single module is using hot module reload at a time. 
-
 # Credits:
+inSquared for his kind patronage          
+Stäbchenfisch for his exceptional support   
+League of Extraordinary FoundryVTT Developers   
 Used webpack and setup files as reference: https://github.com/anvil-vtt/FateX   
 Used github workflow and template reference: https://github.com/League-of-Foundry-Developers/FoundryVTT-Module-Template   

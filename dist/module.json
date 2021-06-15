@@ -3,7 +3,6 @@
   "description": "This module is designed to allow GMs to live animate sudden token movements",
   "version": "1.0.0",
   "library": "false",
-  "socket":true,
   "manifestPlusVersion": "1.0.0",
   "minimumCoreVersion": "0.8.0",
   "compatibleCoreVersion": "0.8.6",
@@ -44,8 +43,8 @@
     }
   ],
   "url": "https://github.com/YourFavouriteOreo/VTT-Live-Animate",
-  "manifest": "replace",
-  "download": "replace",
+  "manifest": "https://raw.githubusercontent.com/YourFavouriteOreo/VTT-Live-Animate/master/dist/module.json",
+  "download": "https://github.com/YourFavouriteOreo/VTT-Live-Animate/releases/download/1.0.0/liveanimate.zip",
   "media": [
     {
       "type": "icon",
